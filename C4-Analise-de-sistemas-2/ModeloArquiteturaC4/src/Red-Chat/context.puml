@@ -1,0 +1,18 @@
+@startuml 
+!include https://raw.githubusercontent.com/adrianvlupu/C4-PlantUML/latest/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+' Aqui você cria os usuários
+Person(cms, "Common User", "User common that acess the system")
+Person(mu, "Master User", "Create User and Delete user and Moderated publish")
+Person(sm, "SalesMan", "publish product")
+Person(m, "Marketing  Manager ads, Analysis of likes,Profile analysis of users")
+
+System(redchat, "Aplication RedChat SOCIAL NETWORK WITH THE POSSIBILITY OF POSTING VIDEOS AND FILES AND SELLING PRODUCTS")
+
+Rel(cms, redchat, "Uses", "HTTPS")
+Rel(mu, redchat, "Uses", "HTTPS")
+Rel(sm,redchat, "Uses", "HTTPS")
+Rel(m, redchat, "Uses", "HTTPS")
+
+@enduml
