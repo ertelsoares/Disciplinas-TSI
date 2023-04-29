@@ -3,26 +3,66 @@
 
 LAYOUT_WITH_LEGEND()
 
-Person(pbc, "Personal Banking Customer", "A customer of the bank, with personal bank accounts.")
-System_Ext(es, "E-mail system", "The internal Microsoft Exchange e-mail system.")
-System_Ext(mbs, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
-System_Boundary(ibs, "Internet Banking") {
-    Container(wa, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
-    Container(spa, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-    Container(ma, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
-    Container(db, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
-    Container(api, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+Person(cms, "Common User", "User common that acess the system")
+Person(mu, "Master User", "Create User and Delete user and Moderated publish")
+Person(sm, "SalesMan", "publish product")
 
-    Rel(api, es, "Sends e-mails", "SMTP")
-    Rel(api, mbs, "Uses", "XML/HTTPS")
-    Rel(api, db, "Reads & writes to", "JDBC")
-    Rel(wa, spa, "Delivers")
-    Rel(spa, api, "Uses", "JSON/HTTPS")
-    Rel(ma, api, "Uses", "JSON/HTTPS")
+System_Boundary(ModuleLogin, "ReadChat module User login") {
+    Container(wbLogin, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(spLogin, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
+    Container(mLogin, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
+    Container(dbLogin, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiLogin, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    
+
+
+    Rel(apiLogin, dbLogin, "Reads & writes to", "JDBC")
+    Rel(wbLogin, spLogin, "Delivers")
+    Rel(spLogin, apiLogin, "Uses", "JSON/HTTPS")
+    Rel(mLogin, apiLogin, "Uses", "JSON/HTTPS")
 }
 
-Rel(pbc, wa, "Uses", "HTTPS")
-Rel(pbc, spa, "Uses")
-Rel(pbc, ma, "Uses")
-Rel(es, pbc, "Sends e-mails to")
+Rel(cms, wbLogin, "Uses", "HTTPS")
+Rel(cms, spLogin, "Uses")
+Rel(cms, mLogin, "Uses")
+
+
+
+System_Boundary(ModuleAdmin, "ReadChat módulo Admin Master User") {
+    Container(wbAdmin, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(spAdmin, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
+    Container(mAdmin, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
+    Container(dbAdmin, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiAdmin, "API Application Admin", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+
+    Rel(apiAdmin, dbAdmin, "Reads & writes to", "JDBC")
+    Rel(wbAdmin, spAdmin, "Delivers")
+    Rel(spAdmin, apiAdmin, "Uses", "JSON/HTTPS")
+    Rel(mAdmin, apiAdmin, "Uses", "JSON/HTTPS")
+}
+
+Rel(mu, wbAdmin, "Uses", "HTTPS")
+Rel(mu, spAdmin, "Uses")
+Rel(mu, mAdmin, "Uses")
+
+
+System_Boundary(ModuleSales, "Read Chat módulo  pelas vendas"){
+       Container(wbSales, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+       Container(spSales, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
+       Container(mSales, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
+       Container(dbSales, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+       Container(apiSales, "API Application Admin", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+
+       Rel(apiSales, dbSales, "Reads & writes to", "JDBC")
+       Rel(wbSales, spSales, "Delivers")
+       Rel(spSales, apiSales, "Uses", "JSON/HTTPS")
+       Rel(mSales, apiSales, "Uses", "JSON/HTTPS")
+
+}
+Rel(sm, wbSales, "Uses", "HTTPS")
+Rel(sm, spSales, "Uses")
+Rel(sm, mSales, "Uses")
+
+
+
 @enduml
