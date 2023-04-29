@@ -4,65 +4,66 @@
 LAYOUT_WITH_LEGEND()
 
 Person(cms, "Common User", "User common that acess the system")
-Person(mu, "Master User", "Create User and Delete user and Moderated publish")
+Person(mu, "Administrator", "Create User and Delete user and Moderated publish")
 Person(sm, "SalesMan", "publish product")
+Person(ma, "Marketing  Manager ads, Analysis of likes,Profile analysis of users")
 
 System_Boundary(ModuleLogin, "ReadChat module User login") {
     Container(wbLogin, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
-    Container(spLogin, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-    Container(mLogin, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
     Container(dbLogin, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
     Container(apiLogin, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
-    
-
-
     Rel(apiLogin, dbLogin, "Reads & writes to", "JDBC")
-    Rel(wbLogin, spLogin, "Delivers")
-    Rel(spLogin, apiLogin, "Uses", "JSON/HTTPS")
-    Rel(mLogin, apiLogin, "Uses", "JSON/HTTPS")
+    Rel(wbLogin, apiLogin, "Delivers")
 }
 
 Rel(cms, wbLogin, "Uses", "HTTPS")
-Rel(cms, spLogin, "Uses")
-Rel(cms, mLogin, "Uses")
 
 
 
-System_Boundary(ModuleAdmin, "ReadChat módulo Admin Master User") {
+
+System_Boundary(ModuleAdmin, "ReadChat module Admin User") {
     Container(wbAdmin, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
-    Container(spAdmin, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-    Container(mAdmin, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
     Container(dbAdmin, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
     Container(apiAdmin, "API Application Admin", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
 
     Rel(apiAdmin, dbAdmin, "Reads & writes to", "JDBC")
-    Rel(wbAdmin, spAdmin, "Delivers")
-    Rel(spAdmin, apiAdmin, "Uses", "JSON/HTTPS")
-    Rel(mAdmin, apiAdmin, "Uses", "JSON/HTTPS")
+    Rel(wbAdmin, apiAdmin, "Delivers")
+    
 }
 
 Rel(mu, wbAdmin, "Uses", "HTTPS")
-Rel(mu, spAdmin, "Uses")
-Rel(mu, mAdmin, "Uses")
 
 
-System_Boundary(ModuleSales, "Read Chat módulo  pelas vendas"){
+
+System_Boundary(ModuleSales, "ReadChat module Sales"){
        Container(wbSales, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
-       Container(spSales, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-       Container(mSales, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
        Container(dbSales, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
        Container(apiSales, "API Application Admin", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
 
        Rel(apiSales, dbSales, "Reads & writes to", "JDBC")
-       Rel(wbSales, spSales, "Delivers")
-       Rel(spSales, apiSales, "Uses", "JSON/HTTPS")
-       Rel(mSales, apiSales, "Uses", "JSON/HTTPS")
+       Rel(wbSales, apiSales, "Delivers")
 
 }
 Rel(sm, wbSales, "Uses", "HTTPS")
-Rel(sm, spSales, "Uses")
-Rel(sm, mSales, "Uses")
 
 
+
+System_Boundary(ModuleMarketing, "ReadChat module Marketing User Marketing") {
+    Container(wbMarketing, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbMarketing, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiMarketing, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiMarketing, dbMarketing, "Reads & writes to", "JDBC")
+    Rel(wbMarketing, apiMarketing, "Delivers")
+
+}
+
+Rel(ma, wbMarketing, "Uses", "HTTPS")
+
+Rel(ModuleLogin,ModuleAdmin, "Uses", "HTTPS")
+Rel(ModuleAdmin,ModuleLogin, "Uses", "HTTPS")
+Rel(ModuleAdmin,ModuleSales, "Uses", "HTTPS")
+Rel(ModuleSales,ModuleAdmin, "Uses", "HTTPS")
+Rel(ModuleSales,ModuleMarketing, "Uses", "HTTPS")
+Rel(ModuleMarketing,ModuleSales, "Uses", "HTTPS")
 
 @enduml

@@ -1,0 +1,129 @@
+@startuml
+!include https://raw.githubusercontent.com/adrianvlupu/C4-PlantUML/latest/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(adm, "Administrator", "Admin User with all privileges to perform system moderation.")
+Person(cms, "Common User", "User common that acess the system")
+Person(mu, "Master User", "Common User, but has benefits due to monthly subscription.")
+Person(sm, "SalesMan", "Common User, but can publish product")
+Person(ma, "Marketing", "Manager ads, Analysis of likes,Profile analysis of users")
+
+
+Rel(cms, sm, "Extends")
+Rel(cms, ma, "Extends")
+Rel(cms, mu, "Extends")
+Rel(cms, adm, "Extends")
+
+System_Boundary(ModuleAdmin, "ReadChat module Admin User") {
+    Container(wbAdmin, "Web Application", "php and Laravel MVC", "Delivers the satic content and the  module Admin")
+    Container(dbAdmin, "Database", "Relational Database Schema", "Stores user registration information, privileges")
+    Container(apiAdmin, "API Application Admin", "php and Lumen MVC", "Provides module Admin functionality via a JSON/HTTP API.")
+
+    Rel(apiAdmin, dbAdmin, "Reads & writes to", "PDO")
+    Rel(wbAdmin, apiAdmin, "Reads requests")
+    
+}
+
+Rel(adm, wbAdmin, "Uses", "HTTPS")
+
+System_Boundary(ModuleSales, "ReadChat module Sales"){
+      Container(wbSales, "Web Application", "php and Laravel MVC", "Delivers the satic content and the  module Admin")
+      Container(dbSales, "Database", "Relational Database Schema", "Stores user registration information, privileges")
+        Container(apiSales, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+
+       Rel(apiSales, dbSales, "Reads & writes to", "JDBC")
+       Rel(wbSales, apiSales, "Delivers")
+
+}
+
+Rel(sm, wbSales, "Uses", "HTTPS")
+
+System_Boundary(ModuleMarketing, "ReadChat module Marketing") {
+    Container(wbMarketing, "Web Application", "php and Laravel MVC", "Delivers the satic content and the  module Admin")
+    Container(dbMarketing, "Database", "Relational Database Schema", "Stores user registration information, privileges")
+    Container(apiMarketing, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiMarketing, dbMarketing, "Reads & writes to", "JDBC")
+    Rel(wbMarketing, apiMarketing, "Delivers")
+
+}
+
+Rel(ma, wbMarketing, "Uses", "HTTPS")
+
+System_Boundary(ModuleMasterUser, "ReadChat module Master Users") {
+  Container(wbMasterUser, "Web Application", "php and Laravel MVC", "Delivers the satic content and the  module Admin")
+    Container(dbMasterUser, "Database", "Relational Database Schema", "Stores user registration information, privileges")
+    Container(apiMasterUser, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiMasterUser, dbMasterUser, "Reads & writes to", "JDBC")
+    Rel(wbMasterUser, apiMasterUser, "Delivers")
+
+}
+
+Rel(mu, wbMasterUser, "Uses", "HTTPS")
+
+Rel(apiSales, apiMasterUser, "Uses")
+Rel(apiSales, apiMarketing, "Uses")
+Rel(apiMarketing, apiSales, "Uses")
+Rel(apiMarketing, apiMasterUser, "Uses")
+Rel(apiMasterUser, apiSales, "Uses")
+Rel(apiMasterUser, apiMarketing, "Uses")
+
+System_Boundary(ModuleLogin, "ReadChat module User login") {
+    Container(wbLogin, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbLogin, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiLogin, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiLogin, dbLogin, "Reads & writes to", "JDBC")
+    Rel(wbLogin, apiLogin, "Delivers")
+}
+
+Rel(cms, wbLogin, "Uses", "HTTPS")
+Rel(apiLogin, wbAdmin, "Uses")
+Rel(apiLogin, wbSales, "Uses")
+Rel(apiLogin, wbMarketing, "Uses")
+Rel(apiLogin, wbMasterUser, "Uses")
+
+System_Boundary(ModuleChat, "ReadChat module Chat") {
+    Container(wbChat, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbChat, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiChat, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiChat, dbChat, "Reads & writes to", "JDBC")
+    Rel(wbChat, apiChat, "Delivers")
+
+}
+
+Rel(cms, ModuleChat, "Uses", "HTTPS")
+
+System_Boundary(ModuleSocial, "ReadChat module Social Network") {
+    Container(wbSocial, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbSocial, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiSocial, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiSocial, dbSocial, "Reads & writes to", "JDBC")
+    Rel(wbSocial, apiSocial, "Delivers")
+
+}
+
+Rel(cms, ModuleSocial, "Uses", "HTTPS")
+
+System_Boundary(ModulePosts, "ReadChat module Posts") {
+    Container(wbPosts, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbPosts, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiPosts, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiPosts, dbPosts, "Reads & writes to", "JDBC")
+    Rel(wbPosts, apiPosts, "Delivers")
+
+}
+
+Rel(cms, ModulePosts, "Uses", "HTTPS")
+
+System_Boundary(ModuleSuppot, "ReadChat module Support") {
+    Container(wbSuppot, "Web Application", "java and Spring MVC", "Delivers the static content and the internet banking single page application.")
+    Container(dbSuppot, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+    Container(apiSuppot, "API Application", "java and String MVC", "Provides internet banking functionality via a JSON/HTTP API.")
+    Rel(apiSuppot, dbSuppot, "Reads & writes to", "JDBC")
+    Rel(wbSuppot, apiSuppot, "Delivers")
+
+}
+
+Rel(cms, ModuleSuppot, "Uses", "HTTPS")
+
+@enduml

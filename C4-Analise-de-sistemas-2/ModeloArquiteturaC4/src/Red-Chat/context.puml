@@ -3,16 +3,25 @@
 
 LAYOUT_WITH_LEGEND()
 ' Aqui você cria os usuários
-Person(cms, "Common User", "User common that acess the system")
-Person(mu, "Master User", "Create User and Delete user and Moderated publish")
-Person(sm, "SalesMan", "publish product")
-Person(m, "Marketing  Manager ads, Analysis of likes,Profile analysis of users")
+Person(cmu, "Common User", "User common that acess the system")
+Person(mu, "Master User", "Common User, but has benefits due to monthly subscription.")
+Person(sm, "Sales User", "Common User, but can publish product")
+Person(mkt, "Marketing User", "Manager ads, Analysis of likes,Profile analysis of users")
+Person(adm, "Administrator", "Admin User with all privileges to perform system moderation.")
 
-System(redchat, "Aplication RedChat SOCIAL NETWORK WITH THE POSSIBILITY OF POSTING VIDEOS AND FILES AND SELLING PRODUCTS")
+System(readchat, "ReadChat", "SOCIAL NETWORK WITH THE POSSIBILITY OF POSTING VIDEOS AND FILES AND SELLING PRODUCTS")
+System_Ext(eml, "E-mail System", "Email system to notify the user via email services.")
+System_Ext(bsy, "Bank System API", "Banking services API, for monetary transfer between users.")
 
-Rel(cms, redchat, "Uses", "HTTPS")
-Rel(mu, redchat, "Uses", "HTTPS")
-Rel(sm,redchat, "Uses", "HTTPS")
-Rel(m, redchat, "Uses", "HTTPS")
+Rel(cmu, mu, "extends")
+Rel(cmu, sm, "extends")
+Rel(cmu, mkt, "extends")
+Rel(cmu, readchat, "Uses", "HTTPS")
+Rel(adm, readchat, "Uses", "HTTPS")
+Rel(mu, readchat, "Uses", "HTTPS")
+Rel(sm,readchat, "Uses", "HTTPS")
+Rel(mkt, readchat, "Uses", "HTTPS")
+Rel(readchat, eml, "Uses")
+Rel(readchat, bsy, "Uses")
 
 @enduml
