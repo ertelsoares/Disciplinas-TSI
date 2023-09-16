@@ -35,9 +35,9 @@ class SecondDegreeEquationTest
 	@Test
 	void shouldThrowsExceptionWithAnInvalidEquation()
 	{
-		float a = 2.0f;
-		float b = 3.0f;
-		float c = 0.0f;
+		float a = 0.0f;
+		float b = 2.0f;
+		float c = 3.0f;
 		
 		assertThrows ( InvalidSecondDegreeException.class, ()->
 		{
