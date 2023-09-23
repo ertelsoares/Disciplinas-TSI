@@ -55,9 +55,22 @@ class PayrollTest {
 
 	@Test
 	void shouldReturnCorrectPayrollSalary() {
-		IEmployee employee;
 		float expected;
 		float obtained;
+		IEmployee[] employees = {new Developer(),new TeamLeader(), new Recruiter(),new Recruiter()};
+		float hours[] = {2,2,2,101};
+		float expectedSalary[] = {80,70,40,2520};
+		
+		
+		for (int i = 0; i < employees.length; i++) {
+			Payroll payroll = new Payroll(employees[i]);
+			expected =expectedSalary[i];
+			obtained = payroll.calculateSalary(hours[i]);
+			assertEquals(expected, obtained);
+		}
+		
+		IEmployee employee;
+		
 		
 		employee = new Developer();
 		expected = 80;
